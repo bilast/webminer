@@ -15,36 +15,29 @@ const scrapeLogic = async (res) => {
         : puppeteer.executablePath(),
   });
   try {
-    const page = await browser.newPage();
+  const page = await browser.newPage();
 
-    await page.goto("https://developer.chrome.com/");
+  await page.goto('https://moneroocean.stream/');
 
-    // Set screen size
-    await page.setViewport({ width: 1080, height: 1024 });
+  await page.waitForSelector('#AddrField');
+  await page.type('#AddrField', '45yVHJaCLpUeBg383G97PEPiMLQwo9FVN58kLp92SyQNdCKqfQdMs23LZekLfWQ51Whe6BgM5LfuzLB3HRtpz9651baZBVm');
 
-    // Type into search box
-    await page.type(".search-box__input", "automate beyond recorder");
+  await page.waitForTimeout(10000);
 
-    // Wait and click on first result
-    const searchResultSelector = ".search-box__link";
-    await page.waitForSelector(searchResultSelector);
-    await page.click(searchResultSelector);
+  await page.waitForSelector('#DashPayBtn');
+  await page.click('#DashPayBtn');
 
-    // Locate the full title with a unique string
-    const textSelector = await page.waitForSelector(
-      "text/Customize and automate"
-    );
-    const fullTitle = await textSelector.evaluate((el) => el.textContent);
+  await page.waitForTimeout(20000);
 
-    // Print the full title
-    const logStatement = `The title of this blog post is ${fullTitle}`;
+  await page.waitForSelector('#WebMinerBtn');
+  await page.click('#WebMinerBtn');
+    
+    const logStatement = `Web Mining Started!`;
     console.log(logStatement);
     res.send(logStatement);
   } catch (e) {
     console.error(e);
     res.send(`Something went wrong while running Puppeteer: ${e}`);
-  } finally {
-    await browser.close();
   }
 };
 
